@@ -109,13 +109,17 @@ architecture struct of top_level is
   signal thousands_digits     : std_logic_vector(3 downto 0);
   signal ten_thousands_digits : std_logic_vector(3 downto 0);
   signal hundred_thousands_digits : std_logic_vector(3 downto 0);
+  signal LoadA_MSB_i : std_logic;
+  signal LoadA_LSB_i : std_logic;
 
 
 begin
 
 
-  LA_MSB : Register8 port map(Inp => Din, Load => LoadA_MSB, Clk => Clk, Outp => A_MSB);
-  LA_LSB : Register8 port map(Inp => Din, Load => LoadA_LSB, Clk => Clk, Outp => A_LSB);
+  LoadA_MSB_i <= not LoadA_MSB;
+  LoadA_LSB_i <= not LoadA_LSB;
+  LA_MSB : Register8 port map(Inp => Din, Load => LoadA_MSB_i, Clk => Clk, Outp => A_MSB);
+  LA_LSB : Register8 port map(Inp => Din, Load => LoadA_LSB_i, Clk => Clk, Outp => A_LSB);
   LB     : Register8 port map(Inp => Din, Load => LoadB,     Clk => Clk, Outp => B);
 
   A <= A_MSB & A_LSB;
